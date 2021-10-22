@@ -52,10 +52,10 @@ namespace DmvAppointmentScheduler
         tellerClassifer["specialtyType_1"]*/
         private static Dictionary<string, List<Teller>> classifyTeller(TellerList tellers)
         {
-            List<Teller> tellerOneList = new List<Teller>();
-            List<Teller> tellerTwoList = new List<Teller>();
-            List<Teller> tellerThreeList = new List<Teller>();
-            List<Teller> tellerZeroList = new List<Teller>();
+            var tellerOneList = new List<Teller>();
+            var tellerTwoList = new List<Teller>();
+            var tellerThreeList = new List<Teller>();
+            var tellerZeroList = new List<Teller>();
             foreach (Teller teller in tellers.Teller)
             {
                 if (teller.specialtyType == "1")
@@ -75,7 +75,7 @@ namespace DmvAppointmentScheduler
                     tellerZeroList.Add(teller);
                 }
             }
-            Dictionary<string, List<Teller>> tellerClassifer = new Dictionary<string, List<Teller>>
+            var tellerClassifer = new Dictionary<string, List<Teller>>
             {   { "specialtyType_1", tellerOneList },
                 { "specialtyType_2", tellerTwoList },
                 { "specialtyType_3", tellerThreeList },
@@ -89,63 +89,87 @@ namespace DmvAppointmentScheduler
         {
             if (customer.type == "1")
             {
-                //Get the next available teller with speciality one
-                var nextTellerOneIndex = _nextAvailableTeller["tellerOneIndex"];
-                var nextAvailableTellerOne = tellerClassifer["specialtyType_1"][nextTellerOneIndex];
-                var appointment = new Appointment(customer, nextAvailableTellerOne);
-                appointmentList.Add(appointment);
-                _nextAvailableTeller["tellerOneIndex"]++;
-                var totalNumberOfTellerOne = tellerClassifer["specialtyType_1"].Count();
-                if (_nextAvailableTeller["tellerOneIndex"] >= totalNumberOfTellerOne)
-                {
-                    _nextAvailableTeller["tellerOneIndex"] = 0;
-                }
+                assignCustomerToTeller1(customer, tellerClassifer);
             }
             else if (customer.type == "2")
             {
-                //Get the next available teller with speciality two
-                var nextTellerTwoIndex = _nextAvailableTeller["tellerTwoIndex"];
-                var nextAvailableTellerTwo = tellerClassifer["specialtyType_2"][nextTellerTwoIndex];
-                var appointment = new Appointment(customer, nextAvailableTellerTwo);
-                appointmentList.Add(appointment);
-                _nextAvailableTeller["tellerTwoIndex"]++;
-                var totalNumberOfTellerTwo = tellerClassifer["specialtyType_2"].Count();
-                if (_nextAvailableTeller["tellerTwoIndex"] >= totalNumberOfTellerTwo)
-                {
-                    _nextAvailableTeller["tellerTwoIndex"] = 0;
-                }
+                assignCustomerToTeller2(customer, tellerClassifer);
             }
             else if (customer.type == "3")
             {
-                //Get the next available teller with speciality three
-                var nextTellerThreeIndex = _nextAvailableTeller["tellerThreeIndex"];
-                var nextAvailableTellerThree = tellerClassifer["specialtyType_3"][nextTellerThreeIndex];
-                var appointment = new Appointment(customer, nextAvailableTellerThree);
-                appointmentList.Add(appointment);
-                _nextAvailableTeller["tellerThreeIndex"]++;
-                var totalNumberOfTellerThree = tellerClassifer["specialtyType_3"].Count();
-                if (_nextAvailableTeller["tellerThreeIndex"] >= totalNumberOfTellerThree)
-                {
-                    _nextAvailableTeller["tellerThreeIndex"] = 0;
-                }
+                assignCustomerToTeller3(customer, tellerClassifer);
             }
             else if (customer.type == "4")
             {
-                //Get the next available teller with speciality zero
-                var nextTellerZeroIndex = _nextAvailableTeller["tellerZeroIndex"];
-                var nextAvailableTellerZero = tellerClassifer["specialtyType_0"][nextTellerZeroIndex];
-                var appointment = new Appointment(customer, nextAvailableTellerZero);
-                appointmentList.Add(appointment);
-                _nextAvailableTeller["tellerZeroIndex"]++;
-                var totalNumberOfTellerZero = tellerClassifer["specialtyType_0"].Count();
-                if (_nextAvailableTeller["tellerZeroIndex"] >= totalNumberOfTellerZero)
-                {
-                    _nextAvailableTeller["tellerZeroIndex"] = 0;
-                }
+                assignCustomerToTeller0(customer, tellerClassifer);
             }
             else
             {
                 Console.WriteLine("Error! Customer type does not recognized ");
+            }
+        }
+        //Assign customer to teller 1
+        private static void assignCustomerToTeller1(Customer customer, Dictionary<string, List<Teller>> tellerClassifer)
+        {
+            //Get the next available teller with speciality one
+            var nextTellerOneIndex = _nextAvailableTeller["tellerOneIndex"];
+            var nextAvailableTellerOne = tellerClassifer["specialtyType_1"][nextTellerOneIndex];
+            var appointment = new Appointment(customer, nextAvailableTellerOne);
+            appointmentList.Add(appointment);
+            _nextAvailableTeller["tellerOneIndex"]++;
+            //if all teller with speciality one are busy -> go back to the first one
+            var totalNumberOfTellerOne = tellerClassifer["specialtyType_1"].Count();
+            if (_nextAvailableTeller["tellerOneIndex"] >= totalNumberOfTellerOne)
+            {
+                _nextAvailableTeller["tellerOneIndex"] = 0;
+            }
+        }
+        //Assign customer to teller 2
+        private static void assignCustomerToTeller2(Customer customer, Dictionary<string, List<Teller>> tellerClassifer)
+        {
+            //Get the next available teller with speciality two
+            var nextTellerTwoIndex = _nextAvailableTeller["tellerTwoIndex"];
+            var nextAvailableTellerTwo = tellerClassifer["specialtyType_2"][nextTellerTwoIndex];
+            var appointment = new Appointment(customer, nextAvailableTellerTwo);
+            appointmentList.Add(appointment);
+            _nextAvailableTeller["tellerTwoIndex"]++;
+            //if all teller with speciality two are busy -> go back to the first one
+            var totalNumberOfTellerTwo = tellerClassifer["specialtyType_2"].Count();
+            if (_nextAvailableTeller["tellerTwoIndex"] >= totalNumberOfTellerTwo)
+            {
+                _nextAvailableTeller["tellerTwoIndex"] = 0;
+            }
+        }
+        //Assign customer to teller 3
+        private static void assignCustomerToTeller3(Customer customer, Dictionary<string, List<Teller>> tellerClassifer)
+        {
+            //Get the next available teller with speciality three
+            var nextTellerThreeIndex = _nextAvailableTeller["tellerThreeIndex"];
+            var nextAvailableTellerThree = tellerClassifer["specialtyType_3"][nextTellerThreeIndex];
+            var appointment = new Appointment(customer, nextAvailableTellerThree);
+            appointmentList.Add(appointment);
+            _nextAvailableTeller["tellerThreeIndex"]++;
+            //if all teller with speciality three are busy -> go back to the first one
+            var totalNumberOfTellerThree = tellerClassifer["specialtyType_3"].Count();
+            if (_nextAvailableTeller["tellerThreeIndex"] >= totalNumberOfTellerThree)
+            {
+                _nextAvailableTeller["tellerThreeIndex"] = 0;
+            }
+        }
+        //Assign customer to teller 0
+        private static void assignCustomerToTeller0(Customer customer, Dictionary<string, List<Teller>> tellerClassifer)
+        {
+            //Get the next available teller with speciality zero
+            var nextTellerZeroIndex = _nextAvailableTeller["tellerZeroIndex"];
+            var nextAvailableTellerZero = tellerClassifer["specialtyType_0"][nextTellerZeroIndex];
+            var appointment = new Appointment(customer, nextAvailableTellerZero);
+            appointmentList.Add(appointment);
+            _nextAvailableTeller["tellerZeroIndex"]++;
+            var totalNumberOfTellerZero = tellerClassifer["specialtyType_0"].Count();
+            //if all teller with speciality zero are busy -> go back to the first one
+            if (_nextAvailableTeller["tellerZeroIndex"] >= totalNumberOfTellerZero)
+            {
+                _nextAvailableTeller["tellerZeroIndex"] = 0;
             }
         }
         static void Calculation(CustomerList customers, TellerList tellers)
@@ -159,12 +183,16 @@ namespace DmvAppointmentScheduler
                  2       ->   2
                  3       ->   3
                  4       ->   0*/
+            
+            //Classify teller based on their speciality
             var tellerClassifer = classifyTeller(tellers);
             foreach (Customer customer in customers.Customer)
             {
                 /*
                 var appointment = new Appointment(customer, tellers.Teller[0]);
                 appointmentList.Add(appointment);*/
+
+                //Assign customer to teller speciality based on what customer need
                 assignCustomerToTeller(customer, tellerClassifer);
             }
         }
