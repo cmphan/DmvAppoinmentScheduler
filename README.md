@@ -41,7 +41,7 @@ Thank you and good luck!
 
 NOV Rigsentry Team
 
-**Installation & Setup Instruction**
+## Installation & Setup Instruction
 
 ## Note on file path to read customer and teller data:
 
