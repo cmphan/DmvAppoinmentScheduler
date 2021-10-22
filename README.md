@@ -45,13 +45,13 @@ NOV Rigsentry Team
 
 ## Note on file path to read customer and teller data:
 
-## On windows:
+### On windows:
 
 ```
 @"InputData\"
 ```
 
-## On Linux/macOS:
+### On Linux/macOS:
 
 ```
 @"InputData"
@@ -65,7 +65,7 @@ For .NET installation and usage tutorial:
 https://docs.microsoft.com/en-us/dotnet/core/tools/
 ```
 
-Then cd into DmvAppoinmentScheduler, run the command:
+Clone this repo then cd into DmvAppoinmentScheduler, run the command:
 
 ```
 dotnet restore
@@ -77,7 +77,7 @@ To start the server, run the command:
 dotnet run
 ```
 
-##Result
+## Result
 
 ![](scheduler_demo.gif)
 
