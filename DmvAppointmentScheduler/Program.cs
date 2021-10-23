@@ -53,7 +53,6 @@ namespace DmvAppointmentScheduler
         {
             var minDuration = Double.MaxValue;
             var bestTeller = new Teller();
-            var tieTeller = new List<Teller>();
             var appointmenDuration = 0.0;
             /*Go through each teller, calculate appointment duration assuming that the teller is assigned to the customer,
             and try to get the teller with the minimum total work time*/
