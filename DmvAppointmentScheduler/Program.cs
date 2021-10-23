@@ -83,6 +83,7 @@ namespace DmvAppointmentScheduler
         static void Calculation(CustomerList customers, TellerList tellers)
         {
             initTellerWorkTime(tellers);
+            //For each customer, we choose the best teller to make appointment with.
             foreach (Customer customer in customers.Customer)
             {
                 /*
